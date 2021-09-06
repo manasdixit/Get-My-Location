@@ -1,10 +1,9 @@
-'use strict';
+"use strict";
 
-const btn = document.querySelector('.btn-country');
-const countriesContainer = document.querySelector('.countries');
+const btn = document.querySelector(".btn-country");
+const countriesContainer = document.querySelector(".countries");
 
 const renderCountry = function (data) {
-  //d
   const html = `
       <article class="country">
       <img class="country__img" src="${data.flag}" />
@@ -19,32 +18,57 @@ const renderCountry = function (data) {
       </div>
       </article>
     `;
-  countriesContainer.insertAdjacentHTML('afterbegin', html);
+  countriesContainer.insertAdjacentHTML("afterbegin", html);
   countriesContainer.style.opacity = 1;
 };
 
-const whereAmI = function (latitude, longitude) {
-  fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      var message = `You are in ${data.region} `;
-      countriesContainer.insertAdjacentText('beforeend', message);
+// const whereAmI = function (latitude, longitude) {
 
-      return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      renderCountry(data[0]);
-    })
-    .catch(err => console.log(err))
-    .catch(err => {
-      console.log(`Something Went Wrong !!`, console.err);
-    });
+//   fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`)
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log(data);
+//       var message = `You are in ${data.region} `;
+//       countriesContainer.insertAdjacentText('beforeend', message);
+
+//       return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log(data);
+//       renderCountry(data[0]);
+//     })
+//     .catch(err => console.log(err))
+//     .catch(err => {
+//       console.log(`Something Went Wrong !!`, console.err);
+//     });
+// };
+
+const whereAmI = async function (latitude, longitude) {
+  const res = await fetch(
+    `https://geocode.xyz/${latitude},${longitude}?geoit=json`
+  );
+  // console.log(res);
+
+  const data = await res.json();
+  // console.log(data);
+
+  var message = `You are in ${data.region} `;
+  countriesContainer.insertAdjacentText("beforeend", message);
+
+  const resCon = await fetch(
+    `https://restcountries.eu/rest/v2/name/${data.country}`
+  );
+  const dataCon = await resCon.json();
+  // console.log(dataCon);
+
+  await renderCountry(dataCon[0]);
+  btn.disabled = true;
+  btn.style.opacity = 0;
 };
+
 // const latitude = prompt('Enter latitude');
 // const longitude = prompt('Enter longitude');
 // const coordinates = [latitude, longitude];
 
-btn.addEventListener('click', () => whereAmI(-22.908333, -43.196388));
+btn.addEventListener("click", () => whereAmI(-22.908333, -43.196388));

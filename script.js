@@ -1,4 +1,8 @@
 "use strict";
+let coordinates = {
+  getLatitude: 0,
+  getLongitude: 0,
+};
 
 const btn = document.querySelector(".btn-country");
 const countriesContainer = document.querySelector(".countries");
@@ -71,4 +75,21 @@ const whereAmI = async function (latitude, longitude) {
 // const longitude = prompt('Enter longitude');
 // const coordinates = [latitude, longitude];
 
-btn.addEventListener("click", () => whereAmI(-22.908333, -43.196388));
+var x = document.getElementById("demo");
+
+(async function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+})();
+
+function showPosition(position) {
+  coordinates.getLatitude = position.coords.latitude;
+  coordinates.getLongitude = position.coords.longitude;
+}
+
+btn.addEventListener("click", () =>
+  whereAmI(coordinates.getLatitude, coordinates.getLongitude)
+);

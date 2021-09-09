@@ -16,6 +16,19 @@ const countriesContainer = document.querySelector(".countries");
   }
 })();
 
+var x = document.getElementById("demo");
+
+function showPosition(position) {
+  coordinates.getLatitude = position.coords.latitude;
+  coordinates.getLongitude = position.coords.longitude;
+}
+
+btn.addEventListener("click", function () {
+  whereAmI(coordinates.getLatitude, coordinates.getLongitude);
+});
+
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // const whereAmI = function (latitude, longitude) {
 
 //   fetch(`https://geocode.xyz/${latitude},${longitude}?geoit=json`)
@@ -38,13 +51,4 @@ const countriesContainer = document.querySelector(".countries");
 //     });
 // };
 
-var x = document.getElementById("demo");
-
-function showPosition(position) {
-  coordinates.getLatitude = position.coords.latitude;
-  coordinates.getLongitude = position.coords.longitude;
-}
-
-btn.addEventListener("click", function () {
-  whereAmI(coordinates.getLatitude, coordinates.getLongitude);
-});
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
